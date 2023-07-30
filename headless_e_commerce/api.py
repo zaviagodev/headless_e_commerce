@@ -12,6 +12,7 @@ def get_addresses():
 
 @frappe.whitelist()
 def get_profile():
+	# get_loyalty_details()
 	return get_party().as_dict()
 
 @frappe.whitelist()
@@ -49,6 +50,7 @@ def place_order(items: list, billing_address: str = None, shipping_address: str 
 			"shipping_address_name": shipping_address or billing_address,
 			"redeem_loyalty_points": 1 if loyalty_points else 0,
 			"loyalty_points": loyalty_points if loyalty_points else None,
+			"docstatus": 1
 		}
 	).insert(ignore_permissions=True)
 
@@ -70,7 +72,7 @@ def add_address(address_line1: str, city: str, country: str, address_type="Billi
 			"pincode": pincode,
 			"phone": phone,
 			"email_id": email_id,
-			"is_primary_address": 1,
+			"is_primary_address": is_primary_address,
 			"is_shipping_address": is_shipping_address,
 			"disabled": 0,
 			"is_your_company_address": 0,
