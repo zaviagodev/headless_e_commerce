@@ -64,7 +64,7 @@ app_license = "MIT"
 # ------------
 
 # before_install = "headless_e_commerce.install.before_install"
-# after_install = "headless_e_commerce.install.after_install"
+after_install = "headless_e_commerce.install_events.after_install"
 
 # Uninstallation
 # ------------
