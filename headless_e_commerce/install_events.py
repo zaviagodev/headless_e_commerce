@@ -1,7 +1,7 @@
 import frappe
 
 def after_install():
-    frappe.get_single("E Commerce Settings").update({
+    frappe.get_single("Webshop Settings").update({
         "products_per_page": 100,
         "show_price": 1,
         "show_stock_availability": 1,

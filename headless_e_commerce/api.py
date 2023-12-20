@@ -93,7 +93,7 @@ def get_loyalty_points_details():
 def place_order(items: list, billing_address: str = None, shipping_address: str = None, branch: str = None, loyalty_points: int = 0):
     party = get_party()
     cart_settings = frappe.db.get_value(
-        "E Commerce Settings", None, ["company", "allow_items_not_in_stock"], as_dict=1
+        "Webshop Settings", None, ["company", "allow_items_not_in_stock"], as_dict=1
     )
 
     # if not (party.customer_primary_address):
