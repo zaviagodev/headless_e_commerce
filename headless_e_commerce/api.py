@@ -2,8 +2,8 @@ import frappe
 import frappe.defaults
 from frappe import _, throw
 from frappe.contacts.doctype.contact.contact import get_contact_name
-from erpnext.e_commerce.shopping_cart.cart import get_party, get_address_docs
-from erpnext.utilities.product import get_web_item_qty_in_stock
+from webshop.webshop.shopping_cart.cart import get_party, get_address_docs
+from webshop.webshop.utils.product import get_web_item_qty_in_stock
 from erpnext.accounts.doctype.loyalty_program.loyalty_program import (
     get_loyalty_details,
 )
@@ -101,9 +101,6 @@ def place_order(items: list, billing_address: str = None, shipping_address: str 
     
     if not cint(cart_settings.allow_items_not_in_stock):
         for item in items:
-            item["warehouse"] = frappe.db.get_value(
-                "Website Item", {"item_code": item.get("item_code")}, "website_warehouse"
-            )
             is_stock_item = frappe.db.get_value("Item", item.get("item_code"), "is_stock_item")
 
             if is_stock_item:
@@ -114,7 +111,11 @@ def place_order(items: list, billing_address: str = None, shipping_address: str 
                     throw(_("Only {0} in Stock for item {1}").format(item_stock.stock_qty[0][0], item.get("item_code")))
     
     # make sure to pass only item_code & qty
-    parsed_items = map(lambda item: {"item_code": item.get("item_code"), "qty": item.get("qty")}, items)
+    parsed_items = map(lambda item: {
+        "item_code": item.get("item_code"),
+        "qty": item.get("qty"),
+        "warehouse": frappe.db.get_value("Website Item", {"item_code": item.get("item_code")}, "website_warehouse")
+    }, items)
     sale_invoice = frappe.get_doc(
         {
             "doctype": "Sales Invoice",
