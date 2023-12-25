@@ -10,5 +10,4 @@ def after_install():
         "price_list": "Standard Selling",
         "quotation_series": "SAL-QTN-.YYYY.-",
         "default_customer_group": "All Customer Groups",
-
     }).save()
