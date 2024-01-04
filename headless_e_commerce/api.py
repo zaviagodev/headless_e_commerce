@@ -16,7 +16,7 @@ def get_addresses():
 
 @frappe.whitelist(allow_guest=True)
 def get_websiteSettings():
-    return  frappe.get_all("Shipping Rule", filters={"custom_show_on_website": 1}, fields=["name","shipping_rule_type","shipping_amount"])
+    return  frappe.get_all("Shipping Rule", fields=["*"])
 
 
 
