@@ -15,6 +15,11 @@ from frappe.utils import cint
 def get_addresses():
     return get_address_docs()
 
+@frappe.whitelist(allow_guest=True)
+def get_websiteSettings():
+    settings = get_website_settings()
+    return  settings.as_dict()
+
 
 
 @frappe.whitelist()
@@ -168,8 +173,5 @@ def add_address(address_line1: str, city: str, country: str, address_type="Billi
     return address.as_dict()
 
 
-@frappe.whitelist(allow_guest=True)
-def get_website_settings():
-    settings = get_website_settings()
-    return  settings.as_dict()
+
 
