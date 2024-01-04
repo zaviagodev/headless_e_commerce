@@ -170,5 +170,6 @@ def add_address(address_line1: str, city: str, country: str, address_type="Billi
 
 @frappe.whitelist(allow_guest=True)
 def get_website_settings():
-    return  get_website_settings()
+    settings = get_website_settings()
+    return  settings.as_dict()
 
