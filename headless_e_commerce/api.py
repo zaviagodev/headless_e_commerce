@@ -4,6 +4,7 @@ from frappe import _, throw
 from frappe.contacts.doctype.contact.contact import get_contact_name
 from webshop.webshop.shopping_cart.cart import get_party, get_address_docs
 from webshop.webshop.utils.product import get_web_item_qty_in_stock
+from e_commerce_store.e_commerce_store.doctype.storefront_website_settings.storefront_website_settings.py import get_website_settings
 from erpnext.accounts.doctype.loyalty_program.loyalty_program import (
     get_loyalty_details,
 )
@@ -13,6 +14,8 @@ from frappe.utils import cint
 @frappe.whitelist()
 def get_addresses():
     return get_address_docs()
+
+
 
 @frappe.whitelist()
 def get_profile():
@@ -163,4 +166,9 @@ def add_address(address_line1: str, city: str, country: str, address_type="Billi
         party.save(ignore_permissions=True)
 
     return address.as_dict()
+
+
+@frappe.whitelist(allow_guest=True)
+def get_website_settings():
+    return  get_website_settings()
 
