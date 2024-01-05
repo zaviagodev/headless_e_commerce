@@ -16,7 +16,7 @@ def get_addresses():
 
 @frappe.whitelist(allow_guest=True)
 def get_websiteSettings():
-    return  frappe.get_all("Storefront Website Settings", fields=["name"])
+    return  frappe.get_all("Storefront Settings", fields=["name"])
 
 
 
