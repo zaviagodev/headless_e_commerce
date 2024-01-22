@@ -16,7 +16,10 @@ def get_addresses():
 
 @frappe.whitelist(allow_guest=True)
 def get_websiteSettings():
-    return  frappe.get_doc("Storefront Website Settings")
+    web_setting = frappe.get_doc("Website Settings")
+    web_dict = web_setting.as_dict()
+    web_dict["default_taxe"]=frappe.db.get_value("Sales Taxes and Charges Template", {"name": web_dict["default_taxe"]}, "name")
+    return  web_dict
 
 
 
