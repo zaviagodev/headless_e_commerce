@@ -20,6 +20,14 @@ def get_websiteSettings():
     web_setting = web_setting.as_dict()
     if web_setting.default_taxe:
         web_setting.default_taxe = frappe.get_doc("Sales Taxes and Charges Template", web_setting.default_taxe).as_dict()
+        rate = 0
+        amout = 0
+        for taxe in web_setting.default_taxe.taxes:
+            rate += taxe.rate
+            amout += taxe.tax_amount
+        web_setting.default_taxe.rate = rate
+        web_setting.default_taxe.tax_amount = amout
+            
     return web_setting
 
 
