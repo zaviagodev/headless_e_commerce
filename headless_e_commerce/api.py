@@ -25,7 +25,8 @@ def get_websiteSettings():
         for taxe in web_setting.default_taxe.taxes:
             rate += taxe.rate
             amout += taxe.amount
-        web_setting.default_taxe = { "rate": rate, "tax_amount": amout}
+        web_setting.default_taxe.rate = rate
+        web_setting.default_taxe.amout = amout
             
     return web_setting
 
