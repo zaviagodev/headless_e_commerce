@@ -16,20 +16,7 @@ def get_addresses():
 
 @frappe.whitelist(allow_guest=True)
 def get_websiteSettings():
-    web_setting = frappe.get_doc("Storefront Website Settings")
-    web_setting = web_setting.as_dict()
-    if web_setting.default_taxe:
-        web_setting.default_taxe = frappe.get_doc("Sales Taxes and Charges Template", web_setting.default_taxe).as_dict()
-        rate = 0
-        amout = 0
-        if web_setting.default_taxe.taxes:
-            for taxe in web_setting.default_taxe.taxes:
-                rate += taxe.rate
-                amout += taxe.tax_amount
-            web_setting.default_taxe.rate = rate
-            web_setting.default_taxe.amout = amout
-            
-    return web_setting
+    return  frappe.get_doc("Storefront Website Settings")
 
 
 
@@ -109,7 +96,7 @@ def get_loyalty_points_details():
     }
 
 @frappe.whitelist()
-def place_order(items: list, billing_address: str = None, shipping_address: str = None, branch: str = None, loyalty_points: int = 0):
+def place_order(items: list, billing_address: str = None, shipping_address: str = None, branch: str = None, loyalty_points: int = 0, shipping_method: str = None, payment_method: int = 0):
     party = get_party()
     cart_settings = frappe.db.get_value(
         "Webshop Settings", None, ["company", "allow_items_not_in_stock"], as_dict=1
@@ -143,6 +130,8 @@ def place_order(items: list, billing_address: str = None, shipping_address: str 
             "items": parsed_items,
             "customer_address": billing_address,
             "shipping_address_name": shipping_address or billing_address,
+            "shipping_rule": shipping_method,
+            "custom_payment_method": payment_method,
             "redeem_loyalty_points": 1 if loyalty_points else 0,
             "loyalty_points": int(loyalty_points) if loyalty_points else None,
             "docstatus": 1
@@ -152,12 +141,12 @@ def place_order(items: list, billing_address: str = None, shipping_address: str 
     return sale_invoice.as_dict()
 
 @frappe.whitelist()
-def add_address(address_line1: str, city: str, country: str, address_type="Billing", state=None, pincode=None,  phone=None, email_id=None, address_line2=None, is_shipping_address=0, is_primary_address=0):
+def add_address(address_line1: str,address_title: str, city: str, country: str, address_type="Billing", state=None, pincode=None,  phone=None, email_id=None, address_line2=None, is_shipping_address=0, is_primary_address=0):
     party = get_party()
     address = frappe.get_doc(
         {
             "doctype": "Address",
-            "address_title": f"{address_line1} {city} {country}",
+            "address_title": address_title,
             "address_type": address_type,
             "address_line1": address_line1,
             "address_line2": address_line2,
